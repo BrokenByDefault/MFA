@@ -119,7 +119,7 @@ func (c *PageImport) OnView(w dom.Document) {
 func (c *PageImport) OnContinue(w dom.Document, _ string) {
 	page := DOM.SetSector(c)
 
-	seed, err := page.GetStringValue(root, "seed")
+	seed, err := page.GetStringValue(root, ".seed")
 	if err != nil || seed == "" {
 		return
 	}
