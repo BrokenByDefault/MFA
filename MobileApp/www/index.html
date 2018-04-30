@@ -1,0 +1,67 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Nanollet MFA</title>
+
+    <meta charset="utf-8"/>
+    <meta name="format-detection" content="telephone=no"/>
+    <meta name="msapplication-tap-highlight" content="no"/>
+
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+</head>
+<body>
+
+<section class="dynamic">
+    <main application="account">
+        <section page="index">
+            <div class="middle">
+                <input class="genSeed" type="submit" value="CREATE NEW 2FA">
+
+                <hr>
+
+                <input class="importSeed" type="submit" value="IMPORT 2FA">
+            </div>
+        </section>
+
+        <section page="generate">
+            <div class="middle">
+
+                <label>COPY YOUR SEEDFY</label>
+                <textarea class="seed" rows="5" spellcheck="false"></textarea>
+
+                <input class="continue" type="submit" value="CONTINUE">
+
+            </div>
+        </section>
+
+        <section page="import">
+            <div class="middle">
+
+                <label>ENTER YOUR SEEDFY</label>
+                <textarea class="seed" rows="5" spellcheck="false"></textarea>
+
+                <input class="continue" type="submit" value="CONTINUE">
+
+            </div>
+        </section>
+
+        <section page="password">
+            <div class="middle">
+
+                <label>PASSWORD</label>
+                <input class="password" type="password">
+
+                <input class="continue" type="submit" value="CONTINUE">
+
+            </div>
+        </section>
+
+        <script type="text/javascript" src="cordova.js">
+            app.initialize();
+        </script>
+        <script type="text/javascript" src="js/js.js"></script>
+    </main>
+</section>
+
+</body>
+</html>

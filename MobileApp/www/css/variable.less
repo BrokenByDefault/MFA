@@ -1,0 +1,79 @@
+
+// -------------------------
+
+@icon-font-path: "fonts";
+@img-path: "front/imgs";
+
+// -------------------------
+
+@color-primary: #183a56;
+@color-secondary: #152360;
+@color-tertiary: #4a90e2;
+
+@color-input-dark: #000034;
+
+@color-dark: #08080e;
+@color-divider: #ea891f;
+@color-light: #efefef;
+@color-gray-light: #dcdcdf;
+@color-gray-dark: #c5c5c8;
+@color-light-blue: #4da7e5;
+@color-dark-blue: #2c3265;
+
+@color-font-secondary: #7f8088;
+// -------------------------
+
+@w-nav: 100vw;
+@h-nav: 40px;
+
+// -------------------------
+
+@w-sidebar: 160px;
+@h-sidebar: ~"calc(100vh - @{h-nav})";
+
+@w-sidebar-content: 100%;
+@h-sidebar-content: 60px;
+
+@w-sidebar-menu: 100%;
+@h-sidebar-menu: 150px;
+
+// -------------------------
+
+@w-sidebar-control: 76px;
+@h-sidebar-control: 100vh;
+
+@w-sidebar-control-button: 44px;
+@h-sidebar-control-button: 44px;
+
+//---------------------------
+
+@w-account-outside: 0px;
+
+@w-account: calc(@w-sidebar + @w-sidebar-control + @w-account-outside + 3px);
+@w-account-logo: 50px;
+@w-account-ammount: calc(@w-account-logo - @w-sidebar + @w-sidebar-control + @w-account-outside + 3px - 30px);
+@h-account: 70px;
+
+// -------------------------
+
+@h-topbar: 80px;
+@w-topbar: ~"calc(100vw - (@{w-sidebar}))";
+@w-topbar-container: 100px;
+@hw-topbar-icon: 32px;
+
+// -------------------------
+
+@h-main: ~"calc(100vh - @{h-nav})";
+@w-main: ~"calc(100vw - (@{w-sidebar} +  @{w-account-outside}))";
+
+// -------------------------
+
+@icon-logout: "\e900";
+@icon-theme: "\e901";
+@icon-message: "\e902";
+@icon-post: "\e903";
+@icon-app: "\e904";
+@icon-setting: "\e905";
+@icon-security: "\e98f";
+
+
