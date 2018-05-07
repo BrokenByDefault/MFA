@@ -4,6 +4,7 @@ import (
 	"golang.org/x/crypto/curve25519"
 	"crypto/rand"
 	"github.com/brokenbydefault/Nanollet/Wallet"
+	"github.com/brokenbydefault/Nanollet/Util"
 )
 
 type DeviceSecret struct {
@@ -42,10 +43,15 @@ func (e *EphemeralSecret) PublicKey() (pk [32]byte) {
 	return pk
 }
 
-func (e *EphemeralSecret) Exchange(partner []byte) (sharedSecretKey [32]byte) {
+func (e *EphemeralSecret) Exchange(partner []byte) (key [32]byte) {
 	var p [32]byte
 	copy(p[:], partner)
 
-	curve25519.ScalarMult(&sharedSecretKey, &e.sk, &p)
-	return sharedSecretKey
+	var sharedkey [32]byte
+	curve25519.ScalarMult(&sharedkey, &e.sk, &p)
+
+	hash := Util.CreateHash(32, sharedkey[:])
+	copy(key[:], hash)
+
+	return key
 }
