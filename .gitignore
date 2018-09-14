@@ -12,12 +12,11 @@
 
 # Project-local glide cache, RE: https://github.com/Masterminds/glide/issues/736
 .glide/
-*.js
-*.map
-*.json
-MobileApp/platforms/idea
-MobileApp/platforms/*
-MobileApp/plugins/*
 .idea
+/GUI/Front/.idea
+*.css
 
-
+test/
+platforms/
+plugins/
+*.zip

@@ -16,6 +16,7 @@
     <plugin name="cordova-plugin-dialogs" />
     <plugin name="cordova-plugin-nativestorage" />
     <plugin name="phonegap-plugin-barcodescanner" />
+    <plugin name="cordova-plugin-chrome-apps-sockets-tcp" spec="https://github.com/KoenLav/cordova-plugin-chrome-apps-sockets-tcp.git" />
 
     <platform name="android">
         <icon density="ldpi" src="www/res/icons/android/drawable-ldpi-icon.png" />
