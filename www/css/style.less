@@ -11,6 +11,27 @@ body {
   margin: 0;
   padding: 0;
   background: @color-primary;
+
+  &.notconnected {
+
+    main, .dynamic {
+      width: 100vw;
+      margin-left: @w-account-outside;
+      .middle {
+        padding-left: @w-account-outside;
+      }
+    }
+
+    section.apps,
+    section.control {
+      display: none;
+    }
+
+    .notification {
+      width: ~"calc(100vw - (@{w-account-outside} + 15px))" !important;
+    }
+
+  }
 }
 
 [page] {

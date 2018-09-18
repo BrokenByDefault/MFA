@@ -1,12 +1,10 @@
 // +build js
 
-//go:generate gopherjs build -o js.js
+//go:generate gopherjs build main_js.go -o js.js
 package main
 
 import (
 	"honnef.co/go/js/dom"
-	"github.com/brokenbydefault/Nanollet/GUI/guitypes"
-	"github.com/brokenbydefault/Nanollet/GUI/Front"
 	"github.com/brokenbydefault/Nanollet/GUI/App/DOM"
 	"github.com/brokenbydefault/Nanollet/Wallet"
 	"github.com/jaracil/goco/nativestorage"
@@ -30,18 +28,19 @@ func main() {
 				nativestorage.SetItem("DEVICE", Util.SecureHexEncode(sk[:]))
 			}
 
-			InitApplication(root, &AccountApp{})
-			ViewApplication(root, &AccountApp{})
+			win := DOM.NewWindow(dom.GetWindow())
+			win.InitApplication(new(AccountApp))
+			win.ViewApplication(new(AccountApp))
 
 			if _, err := nativestorage.GetString("SEEDFY"); err == nil {
-				ViewPage(root, &PagePassword{})
+				win.ViewPage(new(PagePassword))
 			}
 
 		}()
 	})
 }
 
-type AccountApp guitypes.App
+type AccountApp struct{}
 
 func (c *AccountApp) Name() string {
 	return "account"
@@ -51,61 +50,55 @@ func (c *AccountApp) HaveSidebar() bool {
 	return false
 }
 
-func (c *AccountApp) Display() Front.HTMLPAGE {
-	return ""
-}
-
-func (c *AccountApp) Pages() []guitypes.Page {
-	return []guitypes.Page{
-		&PageIndex{},
-		&PageGenerate{},
-		&PageImport{},
-		&PagePassword{},
+func (c *AccountApp) Pages() []DOM.Page {
+	return []DOM.Page{
+		new(PageIndex),
+		new(PageGenerate),
+		new(PageImport),
+		new(PagePassword),
 	}
 }
 
-type PageIndex guitypes.Sector
+type PageIndex struct{}
 
 func (c *PageIndex) Name() string {
 	return "index"
 }
 
-func (c *PageIndex) OnView(w dom.Document) {
+func (c *PageIndex) OnView(w *DOM.Window, dom *DOM.DOM) {
 	// no-op
 }
 
-func (c *PageIndex) OnContinue(w dom.Document, action string) {
+func (c *PageIndex) OnContinue(w *DOM.Window, dom *DOM.DOM, action string) {
 	switch action {
 	case "genSeed":
-		ViewPage(w, &PageGenerate{})
+		w.ViewPage(new(PageGenerate))
 	case "importSeed":
-		ViewPage(w, &PageImport{})
+		w.ViewPage(new(PageImport))
 	}
 }
 
-type PageGenerate guitypes.Sector
+type PageGenerate struct{}
 
 func (c *PageGenerate) Name() string {
 	return "generate"
 }
 
-func (c *PageGenerate) OnView(w dom.Document) {
-	page := DOM.SetSector(c)
+func (c *PageGenerate) OnView(w *DOM.Window, dom *DOM.DOM) {
 
 	seed, err := TwoFactor.NewSeedFY()
 	if err != nil {
 		return
 	}
 
-	textarea, _ := page.SelectFirstElement(w, ".seed")
-	textarea.SetTextContent(seed.String())
-	DOM.ReadOnlyElement(textarea)
+	textarea, _ := dom.SelectFirstElement(".seed")
+	textarea.SetText(seed.String())
+	textarea.Apply(DOM.ReadOnlyElement)
 }
 
-func (c *PageGenerate) OnContinue(w dom.Document, _ string) {
-	page := DOM.SetSector(c)
+func (c *PageGenerate) OnContinue(w *DOM.Window, dom *DOM.DOM, action string) {
 
-	seed, err := page.GetStringValue(w, ".seed")
+	seed, err := dom.GetStringValueOf(".seed")
 	if strings.TrimSpace(seed) == "" || err != nil {
 		dialogs.Alert("Invalid seed", "Error", "Ok")
 		return
@@ -117,23 +110,22 @@ func (c *PageGenerate) OnContinue(w dom.Document, _ string) {
 		return
 	}
 
-	ViewPage(w, &PagePassword{})
+	w.ViewPage(new(PagePassword))
 }
 
-type PageImport guitypes.Sector
+type PageImport struct{}
 
 func (c *PageImport) Name() string {
 	return "import"
 }
 
-func (c *PageImport) OnView(w dom.Document) {
+func (c *PageImport) OnView(w *DOM.Window, dom *DOM.DOM) {
 	//no-op
 }
 
-func (c *PageImport) OnContinue(w dom.Document, _ string) {
-	page := DOM.SetSector(c)
+func (c *PageImport) OnContinue(w *DOM.Window, dom *DOM.DOM, action string) {
 
-	seed, err := page.GetStringValue(root, ".seed")
+	seed, err := dom.GetStringValueOf(".seed")
 	if err != nil || seed == "" {
 		return
 	}
@@ -154,29 +146,28 @@ func (c *PageImport) OnContinue(w dom.Document, _ string) {
 		return
 	}
 
-	ViewPage(w, &PagePassword{})
+	w.ViewPage(new(PagePassword))
 }
 
-type PagePassword guitypes.Sector
+type PagePassword struct{}
 
 func (c *PagePassword) Name() string {
 	return "password"
 }
 
-func (c *PagePassword) OnView(w dom.Document) {
+func (c *PagePassword) OnView(w *DOM.Window, dom *DOM.DOM) {
 	// no-op
 }
 
-func (c *PagePassword) OnContinue(w dom.Document, _ string) {
-	page := DOM.SetSector(c)
+func (c *PagePassword) OnContinue(w *DOM.Window, dom *DOM.DOM, action string) {
 
-	password, err := page.GetStringValue(w, ".password")
+	password, err := dom.GetStringValueOf(".password")
 	if err != nil || len(password) < 8 {
 		dialogs.Alert("Password is too short", "Error", "Ok")
 		return
 	}
 
-	DOM.ApplyForIt(w, ".password", DOM.ClearValue)
+	dom.ApplyFor(".password", DOM.ClearValue)
 
 	seed, _ := nativestorage.GetString("SEEDFY")
 	token, err := TwoFactor.NewToken(seed, []byte(password))
